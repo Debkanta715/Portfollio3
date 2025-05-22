@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video CV - Debkanta Dey</title>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #333;
+            --text-color: #fff;
+            --gradient-1: linear-gradient(45deg, #00ff88, #00b8ff);
+            --gradient-2: linear-gradient(45deg, #ff00cc, #3333ff);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: #000;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 184, 255, 0.1) 0%, transparent 20%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .back-link {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+            margin-top: 80px; /* Add margin to prevent content from being hidden by fixed navbar */
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--gradient-1);
+        }
+
+        .video-wrapper {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .video-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .video-description {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            margin-top: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .video-info:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .video-info p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        @media screen and (max-width: 768px) {
+            .video-container {
+                padding-bottom: 56.25%;
+            }
+
+            .video-wrapper {
+                padding: 1.5rem;
+            }
+
+            .video-title {
+                font-size: 1.5rem;
+            }
+
+            .video-description {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .video-container {
+                padding-bottom: 56.25%;
+            }
+
+            .video-wrapper {
+                padding: 1rem;
+            }
+
+            .video-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in {
+            opacity: 0;
+        }
+
+        .scale-up {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .recruiter-feedback {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .recruiter-feedback h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .feedback-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .feedback-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+            padding: 0 0.5rem;
+        }
+
+        .form-group textarea + label {
+            top: 1rem;
+            transform: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group input:focus + label,
+        .form-group textarea:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group textarea:not(:placeholder-shown) + label {
+            top: 0;
+            left: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0 0.5rem;
+            transform: translateY(-50%);
+        }
+
+        .form-group textarea:focus + label,
+        .form-group textarea:not(:placeholder-shown) + label {
+            transform: none;
+            top: 0.5rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            .recruiter-feedback {
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .feedback-form {
+                padding: 0 1rem;
+            }
+        }
+
+        #feedback-section {
+            padding: 40px 0;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feedback-form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .feedback-form-container h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+            padding: 0 0.5rem;
+        }
+
+        .form-group textarea + label {
+            top: 1.5rem;
+            transform: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group input:focus + label,
+        .form-group textarea:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group textarea:not(:placeholder-shown) + label {
+            top: 0;
+            left: 1rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0 0.5rem;
+            transform: translateY(-50%);
+        }
+
+        .form-group textarea:focus + label,
+        .form-group textarea:not(:placeholder-shown) + label {
+            transform: none;
+            top: 0.5rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: transparent;
+        }
+
+        .feedback-form-container .btn {
+            width: 100%;
+            display: block;
+            margin-top: 1.5rem;
+            background: linear-gradient(90deg, #00ff88, #00b8ff);
+            color: #000;
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .feedback-form-container .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+        }
+
+        footer {
+            background: linear-gradient(to right, #000, var(--secondary-color), #000);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            background: var(--glass-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--gradient-1);
+            transform: translateY(-3px);
+        }
+
+        @media screen and (max-width: 768px) {
+            .feedback-form-container {
+                padding: 1.5rem;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 1.2rem;
+                font-size: 1rem;
+            }
+
+            .form-group label {
+                left: 1.2rem;
+            }
+
+            .form-group input:focus + label,
+            .form-group textarea:focus + label,
+            .form-group input:not(:placeholder-shown) + label,
+            .form-group textarea:not(:placeholder-shown) + label {
+                left: 0.8rem;
+            }
+
+            .feedback-form-container .btn {
+                padding: 1.2rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.from('.video-wrapper', {
+                duration: 1,
+                y: 50,
+                opacity: 0,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.video-title', {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.video-description', {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                delay: 0.6,
+                ease: 'power3.out'
+            });
+
+            const loading = document.querySelector('.loading');
+            if (loading) {
+                setTimeout(() => {
+                    loading.style.opacity = '0';
+                    setTimeout(() => {
+                        loading.remove();
+                    }, 500);
+                }, 1000);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">D-Tech-CODE</div>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>My Video CV</h2>
+
+        <div class="video-wrapper">
+            <h1 class="video-title">My Video CV</h1>
+            <p class="video-description">Watch my video CV to learn more about my experience, skills, and what makes me a great candidate for your team.</p>
+            
+            <div class="video-player">
+                <iframe 
+                    src="https://www.youtube.com/embed/VIDEO_ID" 
+                    title="Video CV"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="video-info">
+                <h3>About This Video</h3>
+                <p>In this video, I share my professional journey, key achievements, and what drives me in my career. I discuss my technical skills, soft skills, and how I can contribute to your organization.</p>
+            </div>
+        </div>
+
+        <section id="feedback-section">
+            <div class="feedback-form-container">
+                <h3>Leave a Comment on the Video</h3>
+                <form>
+                    <div class="form-group">
+                        <input type="text" id="video-feedback-name" placeholder=" " required>
+                        <label for="video-feedback-name">Your Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="video-feedback-email" placeholder=" " required>
+                        <label for="video-feedback-email">Your Email</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="video-feedback-message" rows="5" placeholder=" " required></textarea>
+                        <label for="video-feedback-message">Your Comment</label>
+                    </div>
+                    <button type="submit" class="btn">Submit Comment</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Debkanta Dey. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/Debkanta715"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/debkanta-dey-366507308/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/debkanta72495"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
